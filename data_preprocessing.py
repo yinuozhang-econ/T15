@@ -20,16 +20,15 @@ rating_data['Timestamp'] = pd.to_datetime(rating_data['Timestamp'], unit='s')
 
 # Selecting Data
 # validation set (5 users)
-# user_validation = np.random.choice(user_data['UserID'], 5)
-user_validation = ['5985' '3280' '5126' '907' '106']
+# user_validation = np.random.choice(rating_data['UserID'], 5)
+user_validation = ['2484', '4448', '2106', '5702', '1018']
 # dataset for training and testing
 rating_data_selected = rating_data[~rating_data['UserID'].isin(user_validation)]
 rating_data_selected['Rank_Latest'] = rating_data.groupby(['UserID', 'Rating'])['Timestamp'].rank(method='first',ascending=False)
 
-
 # dataset 1: training dataset
-training_rating = rating_data_selected[rating_data_selected['Rank_Latest'] != 1]
+training_rating = rating_data_selected[rating_data_selected['Rank_Latest'] != 1].drop(['Rank_Latest'], axis=1)
 # dataset 2: testing dataset
-testing_rating = rating_data_selected[rating_data_selected['Rank_Latest'] == 1]
+testing_rating = rating_data_selected[rating_data_selected['Rank_Latest'] == 1].drop(['Rank_Latest'], axis=1)
 # dataset 3: validation dataset (5 users)
-user_validation = ['5985' '3280' '5126' '907' '106']
+validation_rating = rating_data[rating_data['UserID'].isin(user_validation)]
